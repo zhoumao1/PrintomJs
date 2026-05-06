@@ -14,15 +14,10 @@ import '../ui/src/plugins/print/index.less'
 
 /**
  * PrintomJs 构造函数
- * @param {Object} options - 配置选项
- * @returns {PrinterController} 打印控制器实例
  */
 function PrintomJs(options) {
   return new PrinterController(options)
 }
-
-// 静态属性（用于高级用法，如访问内部类）
-PrintomJs.PrinterController = PrinterController
 
 // 默认导出 PrintomJs
 export default PrintomJs

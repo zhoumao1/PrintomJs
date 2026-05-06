@@ -16,7 +16,8 @@
     "print.cjs.min.js",
     "print.css",
     "index.d.ts",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "keywords": [
     "print",

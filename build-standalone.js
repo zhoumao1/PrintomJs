@@ -27,71 +27,34 @@ function generateTypeDefinitions() {
 
   let content = fs.readFileSync(sourceTypes, 'utf-8')
 
-  // 移除 Vue 导入和 Print 插件相关导出
-  content = content
-    .replace(/import \{ Vue \} from 'vue\/types\/vue'\n/, '')
-    .replace(
-      /\n\n\/\*\*\n \* 打印插件\n \*\/\n.*\nexport interface Print[\s\S]*?export const Print: Print/m,
-      ''
-    )
-    .replace(/export interface Print[\s\S]*?export const Print: Print\n/, '')
+  // 1. 移除 Vue 导入
+  content = content.replace(/import \{ Vue \} from 'vue\/types\/vue'\n/, '')
 
-  // 移除 PrintOptions 和 Printer 接口（独立包使用 PrintomJs）
-  // 使用逐行处理方式
-  const lines = content.split('\n')
-  const newLines = []
-  let skipUntilPrinter = false
-  let braceCount = 0
-  let inInterface = 0
-
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i]
-
-    if (!skipUntilPrinter) {
-      if (line.includes('/** 打印选项 */')) {
-        skipUntilPrinter = true
-        continue
-      }
-    } else {
-      // 在跳过模式中
-      if (line.includes('export interface Printer')) {
-        // 遇到 Printer 接口，跳过模式结束
-        skipUntilPrinter = false
-      } else {
-        // 跳过打印选项块的内容
-        continue
-      }
-    }
-
-    newLines.push(line)
+  // 2. 截取到 "打印插件" 注释之前的内容（保留所有类型定义）
+  const splitIndex = content.indexOf('\n\n/**\n * 打印插件\n */')
+  if (splitIndex !== -1) {
+    content = content.substring(0, splitIndex)
   }
 
-  content = newLines.join('\n')
+  // 3. 追加 PrintomJs 类声明
+  const printomJsClass = `
 
-  // 移除 Printer 接口（Vue 插件部分）
-  content = content.replace(
-    /\nexport interface Printer \{[\s\S]*?\nexport const Print: Print\n/,
-    '\n'
-  )
-
-  // 添加 PrintomJs 类声明
-  const printomJsClass = `/**
+/**
  * PrintomJs 主类
  * 现代化的 Web 打印解决方案
  */
 export class PrintomJs {
-  constructor(options: any)
+  constructor(options: PrintOptions)
   preview(container: HTMLElement | string): Promise<PrintomJs>
   exec(): Promise<void>
   update(): Promise<PrintomJs>
   destroy(): void
-  static PrinterController: any
 }
 
 export default PrintomJs
 `
-  // 确保以 export default 结尾
-  content = content.trim() + '\n\n' + printomJsClass
+
+  content = content.trim() + printomJsClass
 
   fs.writeFileSync(targetTypes, content, 'utf-8')
   console.log('  Generated index.d.ts')
@@ -102,7 +65,6 @@ function inlineUtilsPlugin() {
   return {
     name: 'inline-utils',
     resolveId(id) {
-      // 内联 @/utils/dom
       if (id === '@/utils/dom') {
         return resolve(root, 'src/utils/dom.js')
       }
@@ -127,9 +89,7 @@ async function buildStandalone() {
     plugins: [inlineUtilsPlugin()],
     css: { preprocessorOptions: { less: { javascriptEnabled: true } } },
     resolve: {
-      alias: {
-        '@': resolve(root, 'src')
-      }
+      alias: { '@': resolve(root, 'src') }
     },
     build: {
       target: 'es2015',
@@ -141,9 +101,7 @@ async function buildStandalone() {
         fileName: () => 'print.es.js'
       },
       rollupOptions: {
-        output: {
-          assetFileNames: 'print.css'
-        }
+        output: { assetFileNames: 'print.css' }
       },
       minify: false
     }
@@ -158,9 +116,7 @@ async function buildStandalone() {
     plugins: [inlineUtilsPlugin()],
     css: { preprocessorOptions: { less: { javascriptEnabled: true } } },
     resolve: {
-      alias: {
-        '@': resolve(root, 'src')
-      }
+      alias: { '@': resolve(root, 'src') }
     },
     build: {
       target: 'es2015',
@@ -173,9 +129,7 @@ async function buildStandalone() {
         fileName: () => 'print.umd.js'
       },
       rollupOptions: {
-        output: {
-          assetFileNames: 'print.css'
-        }
+        output: { assetFileNames: 'print.css' }
       },
       minify: false
     }
@@ -190,9 +144,7 @@ async function buildStandalone() {
     plugins: [inlineUtilsPlugin()],
     css: { preprocessorOptions: { less: { javascriptEnabled: true } } },
     resolve: {
-      alias: {
-        '@': resolve(root, 'src')
-      }
+      alias: { '@': resolve(root, 'src') }
     },
     build: {
       target: 'es2015',
@@ -204,9 +156,7 @@ async function buildStandalone() {
         fileName: () => 'print.cjs.js'
       },
       rollupOptions: {
-        output: {
-          assetFileNames: 'print.css'
-        }
+        output: { assetFileNames: 'print.css' }
       },
       minify: false
     }
@@ -221,7 +171,6 @@ async function buildStandalone() {
   fs.copyFileSync(resolve(tmpUmd, 'print.umd.js'), resolve(outputDir, 'print.umd.js'))
   fs.copyFileSync(resolve(tmpCjs, 'print.cjs.js'), resolve(outputDir, 'print.cjs.js'))
 
-  // 复制 CSS（从任一临时目录）
   if (fs.existsSync(resolve(tmpEs, 'print.css'))) {
     fs.copyFileSync(resolve(tmpEs, 'print.css'), resolve(outputDir, 'print.css'))
   }
@@ -236,33 +185,28 @@ async function buildStandalone() {
 
   const terserOptions = {
     compress: {
-      drop_console: false, // 保留 console（如果需要完全移除可设为 true）
+      drop_console: false,
       drop_debugger: true,
-      pure_funcs: ['console.debug'], // 移除 console.debug
+      pure_funcs: ['console.debug'],
       passes: 2
     },
     mangle: {
-      toplevel: true, // 混淆顶层作用域
-      properties: false // 不混淆属性名（避免破坏 API）
+      toplevel: true,
+      properties: false
     },
-    format: {
-      comments: false // 移除所有注释
-    }
+    format: { comments: false }
   }
 
-  // 压缩 ES 模块
   const esContent = fs.readFileSync(resolve(outputDir, 'print.es.js'), 'utf-8')
   const minEs = await Terser.minify(esContent, terserOptions)
   if (minEs.error) throw minEs.error
   fs.writeFileSync(resolve(outputDir, 'print.es.min.js'), minEs.code)
 
-  // 压缩 UMD 模块
   const umdContent = fs.readFileSync(resolve(outputDir, 'print.umd.js'), 'utf-8')
   const minUmd = await Terser.minify(umdContent, terserOptions)
   if (minUmd.error) throw minUmd.error
   fs.writeFileSync(resolve(outputDir, 'print.umd.min.js'), minUmd.code)
 
-  // 压缩 CommonJS 模块
   const cjsContent = fs.readFileSync(resolve(outputDir, 'print.cjs.js'), 'utf-8')
   const minCjs = await Terser.minify(cjsContent, terserOptions)
   if (minCjs.error) throw minCjs.error
@@ -270,6 +214,9 @@ async function buildStandalone() {
 
   // 生成类型定义文件
   generateTypeDefinitions()
+
+  // 复制 README.md 到 docs 目录
+  fs.copyFileSync(resolve(__dirname, 'README.md'), resolve(__dirname, 'docs/README.md'))
 
   console.log('Done! Output:', outputDir)
   console.log('\nFiles generated:')

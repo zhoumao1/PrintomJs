@@ -3306,6 +3306,5 @@ body {
   function PrintomJs(options) {
     return new PrinterController(options);
   }
-  PrintomJs.PrinterController = PrinterController;
   return PrintomJs;
 });
