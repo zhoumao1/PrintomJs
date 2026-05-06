@@ -8,11 +8,8 @@
   "jsdelivr": "print.umd.min.js",
   "types": "index.d.ts",
   "files": [
-    "print.es.js",
     "print.es.min.js",
-    "print.umd.js",
     "print.umd.min.js",
-    "print.cjs.js",
     "print.cjs.min.js",
     "print.css",
     "index.d.ts",
