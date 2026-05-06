@@ -28,5 +28,5 @@ publish-standalone.sh
 release.sh
 *.tgz
 
-# GitHub workflows
+# GitHub workflows（允许追踪）
 .github/
