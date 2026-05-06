@@ -20,3 +20,13 @@ Thumbs.db
 # Temp
 *.tmp
 .cache/
+
+# Build scripts（不提交到仓库）
+build-standalone.js
+build.sh
+publish-standalone.sh
+release.sh
+*.tgz
+
+# GitHub workflows
+.github/
