@@ -43,7 +43,7 @@ git tag "v${VERSION}" -f
 
 # 4. 推送到 GitHub（触发 Actions 自动部署）
 echo "🚀 推送到 GitHub..."
-git push origin main --tags
+git push origin main --tags -f
 
 # 5. 发布到 npm
 echo "📤 发布到 npm..."
