@@ -152,10 +152,24 @@ echo ""
 print_info "7️⃣  发布到 npm..."
 cd dist
 
-# 检查是否已登录 npm
-if ! npm whoami &> /dev/null; then
-    print_warning "未登录 npm，请先登录"
-    npm login
+# 检查是否配置了 NPM_TOKEN
+if [ -z "$NPM_TOKEN" ]; then
+    print_warning "未设置 NPM_TOKEN 环境变量"
+    echo ""
+    print_info "请先生成 npm Automation Token："
+    print_info "1. 访问: https://www.npmjs.com/settings/_cat/tokens"
+    print_info "2. 点击 'Generate New Token' → 选择 'Automation'"
+    print_info "3. 复制 Token 并设置环境变量："
+    echo ""
+    echo "   export NPM_TOKEN=npm_xxxxxxxxxxxxxx"
+    echo ""
+    read -p "已设置 NPM_TOKEN？(y/n) " -n 1 -r
+    echo
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+        print_warning "已跳过 npm 发布"
+        cd ..
+        exit 0
+    fi
 fi
 
 echo ""
