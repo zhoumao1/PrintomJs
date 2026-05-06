@@ -39,7 +39,7 @@ echo "🔨 构建中..."
 echo "📦 Git 提交..."
 git add -A
 git commit -m "${MESSAGE}"
-git tag "v${VERSION}"
+git tag "v${VERSION}" -f
 
 # 4. 推送到 GitHub（触发 Actions 自动部署）
 echo "🚀 推送到 GitHub..."
