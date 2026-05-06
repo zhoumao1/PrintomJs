@@ -20,6 +20,83 @@ function cleanOutput() {
   fs.mkdirSync(outputDir, { recursive: true })
 }
 
+// 从主包类型文件生成独立包的类型定义
+function generateTypeDefinitions() {
+  const sourceTypes = resolve(root, 'types/plugins/print.d.ts')
+  const targetTypes = resolve(outputDir, 'index.d.ts')
+
+  let content = fs.readFileSync(sourceTypes, 'utf-8')
+
+  // 移除 Vue 导入和 Print 插件相关导出
+  content = content
+    .replace(/import \{ Vue \} from 'vue\/types\/vue'\n/, '')
+    .replace(
+      /\n\n\/\*\*\n \* 打印插件\n \*\/\n.*\nexport interface Print[\s\S]*?export const Print: Print/m,
+      ''
+    )
+    .replace(/export interface Print[\s\S]*?export const Print: Print\n/, '')
+
+  // 移除 PrintOptions 和 Printer 接口（独立包使用 PrintomJs）
+  // 使用逐行处理方式
+  const lines = content.split('\n')
+  const newLines = []
+  let skipUntilPrinter = false
+  let braceCount = 0
+  let inInterface = 0
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i]
+
+    if (!skipUntilPrinter) {
+      if (line.includes('/** 打印选项 */')) {
+        skipUntilPrinter = true
+        continue
+      }
+    } else {
+      // 在跳过模式中
+      if (line.includes('export interface Printer')) {
+        // 遇到 Printer 接口，跳过模式结束
+        skipUntilPrinter = false
+      } else {
+        // 跳过打印选项块的内容
+        continue
+      }
+    }
+
+    newLines.push(line)
+  }
+
+  content = newLines.join('\n')
+
+  // 移除 Printer 接口（Vue 插件部分）
+  content = content.replace(
+    /\nexport interface Printer \{[\s\S]*?\nexport const Print: Print\n/,
+    '\n'
+  )
+
+  // 添加 PrintomJs 类声明
+  const printomJsClass = `/**
+ * PrintomJs 主类
+ * 现代化的 Web 打印解决方案
+ */
+export class PrintomJs {
+  constructor(options: any)
+  preview(container: HTMLElement | string): Promise<PrintomJs>
+  exec(): Promise<void>
+  update(): Promise<PrintomJs>
+  destroy(): void
+  static PrinterController: any
+}
+
+export default PrintomJs
+`
+  // 确保以 export default 结尾
+  content = content.trim() + '\n\n' + printomJsClass
+
+  fs.writeFileSync(targetTypes, content, 'utf-8')
+  console.log('  Generated index.d.ts')
+}
+
 // 内联依赖的工具函数
 function inlineUtilsPlugin() {
   return {
@@ -91,7 +168,7 @@ async function buildStandalone() {
       emptyOutDir: true,
       lib: {
         entry,
-        name: 'KidneyPrint',
+        name: 'PrintomJs',
         formats: ['umd'],
         fileName: () => 'print.umd.js'
       },
@@ -190,6 +267,9 @@ async function buildStandalone() {
   const minCjs = await Terser.minify(cjsContent, terserOptions)
   if (minCjs.error) throw minCjs.error
   fs.writeFileSync(resolve(outputDir, 'print.cjs.min.js'), minCjs.code)
+
+  // 生成类型定义文件
+  generateTypeDefinitions()
 
   console.log('Done! Output:', outputDir)
   console.log('\nFiles generated:')

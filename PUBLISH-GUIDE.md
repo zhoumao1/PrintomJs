@@ -1,9 +1,9 @@
-# 🎉 FlowPrint 发布指南
+# 🎉 PrintomJs 发布指南
 
 ## ✅ 已完成的工作
 
 ### 1. 代码准备
-- ✅ 包名已更新为 `flowprint`
+- ✅ 包名已更新为 `printom-js`
 - ✅ README 已更新（包含对比表格、完整文档）
 - ✅ LICENSE 文件已创建（MIT）
 - ✅ package.json 已配置完整
@@ -14,7 +14,7 @@
 ### 2. Git 提交
 - ✅ Git 仓库已初始化
 - ✅ 所有文件已提交（2 个 commits）
-- ✅ 远程仓库已配置：`git@github.com:zhoumao1/FlowPrint.git`
+- ✅ 远程仓库已配置：`git@github.com:zhoumao1/PrintomJs.git`
 
 ## 🚧 需要手动完成的步骤
 
@@ -29,7 +29,7 @@ cd /Users/jirong/Works/z_other/@kidney-webkit/packages/print-standalone
 git push -u origin main
 
 # 方式 B：使用 HTTPS（需要输入 GitHub 用户名和密码/token）
-git remote set-url origin https://github.com/zhoumao1/FlowPrint.git
+git remote set-url origin https://github.com/zhoumao1/PrintomJs.git
 git push -u origin main
 ```
 
@@ -48,14 +48,14 @@ cat ~/.ssh/id_ed25519.pub
 
 推送成功后，在 GitHub 仓库中：
 
-1. 进入仓库：https://github.com/zhoumao1/FlowPrint
+1. 进入仓库：https://github.com/zhoumao1/PrintomJs
 2. 点击 **Settings**
 3. 左侧菜单找到 **Pages**
 4. 在 **Source** 下拉菜单中选择：
    - Branch: `main`
    - Folder: `/docs`
 5. 点击 **Save**
-6. 等待几分钟后，访问：**https://zhoumao1.github.io/FlowPrint/**
+6. 等待几分钟后，访问：**https://zhoumao1.github.io/PrintomJs/**
 
 ### 步骤 3：发布到 npm
 
@@ -71,7 +71,7 @@ npm publish --access public
 
 **首次发布后，用户可以通过以下方式安装：**
 ```bash
-npm install flowprint
+npm install printom-js
 ```
 
 ## 📂 文件结构
@@ -108,18 +108,18 @@ print-standalone/
 
 ## 🌐 最终访问地址
 
-- **GitHub 仓库**: https://github.com/zhoumao1/FlowPrint
-- **在线演示**: https://zhoumao1.github.io/FlowPrint/ （启用 Pages 后）
-- **npm 包**: https://www.npmjs.com/package/flowprint （发布后）
+- **GitHub 仓库**: https://github.com/zhoumao1/PrintomJs
+- **在线演示**: https://zhoumao1.github.io/PrintomJs/ （启用 Pages 后）
+- **npm 包**: https://www.npmjs.com/package/printom-js （发布后）
 - **CDN**: 
-  - https://unpkg.com/flowprint
-  - https://cdn.jsdelivr.net/npm/flowprint
+  - https://unpkg.com/printom-js
+  - https://cdn.jsdelivr.net/npm/printom-js
 
 ## 📝 Git 提交历史
 
 ```
 e4a16f7 Add GitHub Pages demo site
-54c1798 Initial commit: FlowPrint v1.0.0
+54c1798 Initial commit: PrintomJs v1.0.0
 ```
 
 ## 🎯 后续维护

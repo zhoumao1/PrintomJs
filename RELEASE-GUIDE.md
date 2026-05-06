@@ -1,4 +1,4 @@
-# FlowPrint 发布脚本使用指南
+# PrintomJs 发布脚本使用指南
 
 ## 🚀 一键发布脚本
 
@@ -125,7 +125,7 @@ npm publish --access public
 ssh -T git@github.com
 
 # 如果失败，改用 HTTPS
-git remote set-url origin https://github.com/zhoumao1/FlowPrint.git
+git remote set-url origin https://github.com/zhoumao1/PrintomJs.git
 ```
 
 ### Q: npm 发布失败？
@@ -154,7 +154,7 @@ git tag -d v1.0.1
 **A:** npm 发布后 72 小时内可以撤销：
 
 ```bash
-npm unpublish flowprint@1.0.1
+npm unpublish printom-js@1.0.1
 ```
 
 **注意：** 撤销后该版本号不能再次使用。
@@ -204,13 +204,13 @@ cat package.json | grep version
 git tag -l
 
 # 查看 npm 包信息
-npm view flowprint
+npm view printom-js
 
 # 查看发布历史
-npm view flowprint versions
+npm view printom-js versions
 ```
 
 ## 📞 需要帮助？
 
-- GitHub Issues: https://github.com/zhoumao1/FlowPrint/issues
+- GitHub Issues: https://github.com/zhoumao1/PrintomJs/issues
 - npm 文档: https://docs.npmjs.com/

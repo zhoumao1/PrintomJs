@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# FlowPrint 一键发布脚本
+# PrintomJs 一键发布脚本
 # 用法：./release.sh [version] [message]
 # 示例：./release.sh 1.0.1 "修复分页bug"
 
@@ -35,7 +35,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
 # GitHub 仓库配置
-GITHUB_REPO="https://github.com/zhoumao1/FlowPrint.git"
+GITHUB_REPO="https://github.com/zhoumao1/PrintomJs.git"
 GITHUB_BRANCH="main"
 
 # 检查参数
@@ -55,7 +55,7 @@ fi
 
 echo ""
 print_info "=========================================="
-print_info "FlowPrint 一键发布脚本"
+print_info "PrintomJs 一键发布脚本"
 print_info "=========================================="
 echo ""
 print_info "版本号: ${VERSION}"
@@ -133,8 +133,8 @@ git push -f origin --tags
 
 if [ $? -eq 0 ]; then
     print_success "已推送到 GitHub"
-    print_info "仓库地址: https://github.com/zhoumao1/FlowPrint"
-    print_info "演示地址: https://zhoumao1.github.io/FlowPrint/"
+    print_info "仓库地址: https://github.com/zhoumao1/PrintomJs"
+    print_info "演示地址: https://zhoumao1.github.io/PrintomJs/"
 else
     print_error "推送到 GitHub 失败"
     print_warning "请检查网络连接和 GitHub Token"
@@ -174,7 +174,7 @@ fi
 
 echo ""
 print_info "准备发布到 npm..."
-echo "包名: flow-print"
+echo "包名: printom-js"
 echo "版本: ${VERSION}"
 echo ""
 read -p "确认发布到 npm？(y/n) " -n 1 -r
@@ -183,8 +183,8 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     npm publish --access public
     if [ $? -eq 0 ]; then
         print_success "已发布到 npm"
-        print_info "npm 地址: https://www.npmjs.com/package/flow-print"
-        print_info "安装命令: npm install flow-print"
+        print_info "npm 地址: https://www.npmjs.com/package/printom-js"
+        print_info "安装命令: npm install printom-js"
     else
         print_error "发布到 npm 失败"
         exit 1
@@ -203,11 +203,11 @@ print_success "🎉 发布完成！"
 print_success "=========================================="
 echo ""
 print_info "版本: v${VERSION}"
-print_info "GitHub: https://github.com/zhoumao1/FlowPrint"
-print_info "演示: https://zhoumao1.github.io/FlowPrint/"
-print_info "npm: https://www.npmjs.com/package/flow-print"
+print_info "GitHub: https://github.com/zhoumao1/PrintomJs"
+print_info "演示: https://zhoumao1.github.io/PrintomJs/"
+print_info "npm: https://www.npmjs.com/package/printom-js"
 echo ""
 print_info "CDN 地址:"
-echo "  - https://unpkg.com/flow-print@${VERSION}"
-echo "  - https://cdn.jsdelivr.net/npm/flow-print@${VERSION}"
+echo "  - https://unpkg.com/printom-js@${VERSION}"
+echo "  - https://cdn.jsdelivr.net/npm/printom-js@${VERSION}"
 echo ""

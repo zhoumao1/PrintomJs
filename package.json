@@ -1,5 +1,5 @@
 {
-  "name": "flow-print",
+  "name": "printom-js",
   "version": "1.0.0",
   "description": "Modern web printing solution - Zero dependencies, smart pagination, perfect rendering",
   "main": "print.cjs.min.js",
@@ -24,7 +24,7 @@
     "web-print",
     "page-break",
     "pdf",
-    "flow-print",
+    "printom-js",
     "pagination",
     "print-preview"
   ],
@@ -32,10 +32,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/zhoumao1/FlowPrint.git"
+    "url": "git+https://github.com/zhoumao1/PrintomJs.git"
   },
   "bugs": {
-    "url": "https://github.com/zhoumao1/FlowPrint/issues"
+    "url": "https://github.com/zhoumao1/PrintomJs/issues"
   },
-  "homepage": "https://zhoumao1.github.io/FlowPrint/"
+  "homepage": "https://zhoumao1.github.io/PrintomJs/"
 }

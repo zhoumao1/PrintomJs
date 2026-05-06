@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FlowPrint - 现代化的 Web 打印解决方案</title>
+  <title>PrintomJs - 现代化的 Web 打印解决方案</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -597,14 +597,14 @@
   <!-- Header -->
   <header class="header">
     <nav class="nav">
-      <a href="#" class="logo">FlowPrint</a>
+      <a href="#" class="logo">PrintomJs</a>
       <ul class="nav-links">
         <li><a href="#examples">示例</a></li>
         <li><a href="#demo">演示</a></li>
         <li><a href="#comparison">对比</a></li>
-        <li><a href="https://github.com/zhoumao1/FlowPrint">GitHub</a></li>
+        <li><a href="https://github.com/zhoumao1/PrintomJs">GitHub</a></li>
       </ul>
-      <a href="https://www.npmjs.com/package/flowprint" class="btn btn-primary">立即使用</a>
+      <a href="https://www.npmjs.com/package/printom-js" class="btn btn-primary">立即使用</a>
     </nav>
   </header>
 
@@ -615,10 +615,10 @@
       <p>零依赖、智能分页、完美还原 - 让 Web 打印变得简单而强大</p>
       <div class="hero-cta">
         <a href="#demo" class="btn btn-primary">在线演示</a>
-        <a href="https://github.com/zhoumao1/FlowPrint" class="btn btn-secondary">查看文档</a>
+        <a href="https://github.com/zhoumao1/PrintomJs" class="btn btn-secondary">查看文档</a>
       </div>
       <div class="install-command">
-        <span>npm install flowprint</span>
+        <span>npm install printom-js</span>
         <button class="copy-btn" onclick="copyInstall()">复制</button>
       </div>
     </div>
@@ -633,13 +633,13 @@
           <h3>基础用法</h3>
           <p>最简单的打印实现</p>
         </div>
-        <div class="example-code"><span class="keyword">import</span> PrinterController <span class="keyword">from</span> <span class="string">'flowprint'</span>
-<span class="keyword">import</span> <span class="string">'flowprint/print.css'</span>
+        <div class="example-code"><span class="keyword">import</span> PrintomJs <span class="keyword">from</span> <span class="string">'printom-js'</span>
+<span class="keyword">import</span> <span class="string">'printom-js/print.css'</span>
 
-<span class="keyword">const</span> printer = <span class="keyword">new</span> <span class="function">PrinterController</span>({
+<span class="comment">// 基础打印</span>
+<span class="keyword">const</span> printer = <span class="keyword">new</span> <span class="function">PrintomJs</span>({
   element: <span class="string">'#content'</span>
 })
-
 <span class="keyword">await</span> printer.<span class="function">exec</span>()</div>
       </div>
 
@@ -648,7 +648,7 @@
           <h3>带页眉页脚</h3>
           <p>添加自定义页眉和页脚</p>
         </div>
-        <div class="example-code"><span class="keyword">const</span> printer = <span class="keyword">new</span> <span class="function">PrinterController</span>({
+        <div class="example-code"><span class="keyword">const</span> printer = <span class="keyword">new</span> <span class="function">PrintomJs</span>({
   element: <span class="string">'#content'</span>,
   header: {
     left: <span class="string">'公司名称'</span>,
@@ -666,7 +666,7 @@
           <h3>自定义页面尺寸</h3>
           <p>支持 A4、A3、Letter 等</p>
         </div>
-        <div class="example-code"><span class="keyword">const</span> printer = <span class="keyword">new</span> <span class="function">PrinterController</span>({
+        <div class="example-code"><span class="keyword">const</span> printer = <span class="keyword">new</span> <span class="function">PrintomJs</span>({
   element: <span class="string">'#content'</span>,
   paper: <span class="string">'A4'</span>,
   orientation: <span class="string">'portrait'</span>,
@@ -800,13 +800,13 @@
 
   <!-- Comparison -->
   <section class="comparison" id="comparison">
-    <h2 class="section-title">为什么选择 FlowPrint？</h2>
+    <h2 class="section-title">为什么选择 PrintomJs？</h2>
     <div class="comparison-table">
       <table>
         <thead>
           <tr>
             <th>特性</th>
-            <th>FlowPrint</th>
+            <th>PrintomJs</th>
             <th>Print.js</th>
             <th>html2canvas</th>
             <th>window.print()</th>
@@ -870,17 +870,17 @@
   <!-- Footer -->
   <footer class="footer">
     <div class="footer-links">
-      <a href="https://github.com/zhoumao1/FlowPrint">GitHub</a>
-      <a href="https://www.npmjs.com/package/flowprint">npm</a>
-      <a href="https://github.com/zhoumao1/FlowPrint/blob/main/README.md">文档</a>
-      <a href="https://github.com/zhoumao1/FlowPrint/issues">Issues</a>
+      <a href="https://github.com/zhoumao1/PrintomJs">GitHub</a>
+      <a href="https://www.npmjs.com/package/printom-js">npm</a>
+      <a href="https://github.com/zhoumao1/PrintomJs/blob/main/README.md">文档</a>
+      <a href="https://github.com/zhoumao1/PrintomJs/issues">Issues</a>
     </div>
     <p>MIT License © 2024 zhoumao1</p>
   </footer>
 
   <script src="./print.umd.js"></script>
   <script>
-    const { PrinterController } = window.KidneyPrint
+    const PrintomJs = window.PrintomJs
     let printer = null
     let isLoading = false
 
@@ -970,7 +970,7 @@
 </table>`,
       text: `<h2>长文本分页测试</h2>${Array(20).fill(0).map((_, i) => `<h3>第 ${i + 1} 段</h3><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>`).join('')}`,
       image: `<h2>图片处理测试</h2><div style="margin:20px 0;"><img src="https://picsum.photos/800/400?random=1" style="max-width:100%;height:auto;border-radius:8px;"></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:15px;">${Array(9).fill(0).map((_, i) => `<img src="https://picsum.photos/200/150?random=${i + 10}" style="width:100%;height:auto;border-radius:8px;">`).join('')}</div>`,
-      mixed: `<h2>图文混排测试</h2>${Array(5).fill(0).map((_, i) => `<div style="margin:20px 0;"><h3>章节 ${i + 1}</h3><div style="display:flex;gap:20px;align-items:start;"><img src="https://picsum.photos/300/200?random=${i + 20}" style="width:300px;height:auto;border-radius:8px;flex-shrink:0;"><p style="flex: 1">这是一段配合图片的文字内容。图文混排时需要确保分页时图片和文字的关联性，避免图片和文字被分到不同页面。FlowPrint 会智能处理这种情况，确保最佳的打印效果。</p></div></div>`).join('')}`
+      mixed: `<h2>图文混排测试</h2>${Array(5).fill(0).map((_, i) => `<div style="margin:20px 0;"><h3>章节 ${i + 1}</h3><div style="display:flex;gap:20px;align-items:start;"><img src="https://picsum.photos/300/200?random=${i + 20}" style="width:300px;height:auto;border-radius:8px;flex-shrink:0;"><p style="flex: 1">这是一段配合图片的文字内容。图文混排时需要确保分页时图片和文字的关联性，避免图片和文字被分到不同页面。PrintomJs 会智能处理这种情况，确保最佳的打印效果。</p></div></div>`).join('')}`
     }
 
     function onPresetChange() {
@@ -1064,7 +1064,7 @@
           bottom: `${marginBottom}mm`,
           left: `${marginLeft}mm`
         },
-        header: { left: 'FlowPrint', center: '演示文档', right: new Date().toLocaleDateString() },
+        header: { left: 'PrintomJs', center: '演示文档', right: new Date().toLocaleDateString() },
         footer: { center: '第 {current} / {total} 页' }
       }
     }
@@ -1082,7 +1082,7 @@
         if (printer) {
           printer.destroy()
         }
-        printer = new PrinterController(getPrinterOptions())
+        printer = new PrintomJs(getPrinterOptions())
         await printer.preview('#demo-preview-area')
       } catch (error) {
         console.error('Preview error:', error)
@@ -1104,7 +1104,7 @@
       try {
         console.log(getPrinterOptions())
         if (!printer) {
-          printer = new PrinterController(getPrinterOptions())
+          printer = new PrintomJs(getPrinterOptions())
         }
         await printer.exec()
       } catch (error) {
@@ -1116,7 +1116,7 @@
     }
 
     function copyInstall() {
-      navigator.clipboard.writeText('npm install flowprint')
+      navigator.clipboard.writeText('npm install printom-js')
       const btn = event.target
       btn.textContent = '已复制'
       setTimeout(() => btn.textContent = '复制', 2000)

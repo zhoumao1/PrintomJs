@@ -690,49 +690,6 @@ function createLogger(moduleName) {
   };
   return log2;
 }
-const Logger = {
-  /** 开启所有模块 */
-  enableAll() {
-    globalEnabled = true;
-    Object.keys(modules).forEach((k) => {
-      modules[k] = true;
-    });
-  },
-  /** 关闭所有模块 */
-  disableAll() {
-    globalEnabled = false;
-    Object.keys(modules).forEach((k) => {
-      modules[k] = false;
-    });
-  },
-  /** 开启指定模块 */
-  enable(...names) {
-    names.forEach((n) => {
-      modules[n] = true;
-    });
-  },
-  /** 关闭指定模块 */
-  disable(...names) {
-    names.forEach((n) => {
-      modules[n] = false;
-    });
-  },
-  /** 只开启指定模块，关闭其余 */
-  only(names) {
-    const list = Array.isArray(names) ? names : [names];
-    globalEnabled = false;
-    Object.keys(modules).forEach((k) => {
-      modules[k] = false;
-    });
-    list.forEach((n) => {
-      modules[n] = true;
-    });
-  },
-  /** 获取所有已注册模块的状态 */
-  status() {
-    return { globalEnabled, modules: __spreadValues({}, modules) };
-  }
-};
 const log$9 = createLogger("Previewer");
 class Previewer {
   /**
@@ -3342,8 +3299,10 @@ class PrinterController {
     this.cachedLayout = null;
   }
 }
+function PrintomJs(options) {
+  return new PrinterController(options);
+}
+PrintomJs.PrinterController = PrinterController;
 export {
-  Logger,
-  PrinterController,
-  PrinterController as default
+  PrintomJs as default
 };
