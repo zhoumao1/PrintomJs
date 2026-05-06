@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FlowPrint - 现代化的 Web 打印解决方案</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./print.css">
+  <style>
+    :root {
+      --color-primary: #0F172A;
+      --color-secondary: #334155;
+      --color-accent: #0369A1;
+      --color-accent-hover: #0284C7;
+      --color-success: #059669;
+      --color-background: #F8FAFC;
+      --color-surface: #FFFFFF;
+      --color-text: #020617;
+      --color-text-muted: #64748B;
+      --color-border: #E2E8F0;
+      --font-base: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --transition: 200ms ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-base);
+      color: var(--color-text);
+      background: var(--color-background);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Header */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--color-border);
+      z-index: 100;
+    }
+
+    .nav {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--color-text);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color var(--transition);
+      cursor: pointer;
+    }
+
+    .nav-links a:hover {
+      color: var(--color-accent);
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all var(--transition);
+      cursor: pointer;
+      border: none;
+      font-family: var(--font-base);
+      font-size: 0.9375rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    .btn-primary {
+      background: var(--color-accent);
+      color: white;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: var(--color-accent-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(3, 105, 161, 0.2);
+    }
+
+    .btn-primary:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    .btn-secondary {
+      background: var(--color-surface);
+      color: var(--color-text);
+      border: 1px solid var(--color-border);
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      border-color: var(--color-accent);
+      color: var(--color-accent);
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .btn-secondary:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    /* Loading Spinner */
+    .spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 8rem 2rem 4rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .hero-content {
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+      color: var(--color-primary);
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      color: var(--color-text-muted);
+      margin-bottom: 2rem;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 4rem;
+    }
+
+    .install-command {
+      background: var(--color-primary);
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      font-family: 'Monaco', 'Menlo', monospace;
+      font-size: 0.9375rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .copy-btn {
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: white;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.75rem;
+      transition: background var(--transition);
+    }
+
+    .copy-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Code Example Section - 4-column grid */
+    .code-examples {
+      padding: 4rem 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 3rem;
+      color: var(--color-primary);
+    }
+
+    .examples-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+
+    .example-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .example-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--color-border);
+      flex-shrink: 0;
+    }
+
+    .example-header h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .example-header p {
+      color: var(--color-text-muted);
+      font-size: 0.875rem;
+    }
+
+    .example-code {
+      background: var(--color-primary);
+      color: #E2E8F0;
+      padding: 1.5rem;
+      font-family: 'Monaco', 'Menlo', monospace;
+      font-size: 0.8125rem;
+      line-height: 1.7;
+      overflow-x: auto;
+      flex-grow: 1;
+    }
+
+    .example-code .keyword { color: #7DD3FC; }
+    .example-code .string { color: #86EFAC; }
+    .example-code .function { color: #FDE047; }
+    .example-code .comment { color: #94A3B8; }
+
+    /* Demo Section */
+    .demo-section {
+      padding: 4rem 2rem;
+      background: var(--color-surface);
+    }
+
+    .demo-container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* Horizontal Tabs */
+    .demo-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .demo-tab {
+      padding: 0.875rem 1.5rem;
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      font-family: var(--font-base);
+      font-size: 0.9375rem;
+      font-weight: 500;
+      color: var(--color-text-muted);
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .demo-tab:hover {
+      color: var(--color-text);
+      background: var(--color-background);
+    }
+
+    .demo-tab.active {
+      color: var(--color-accent);
+      border-bottom-color: var(--color-accent);
+      background: rgba(3, 105, 161, 0.05);
+    }
+
+    /* Page Settings Bar */
+    .page-settings {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      padding: 0.875rem 1.25rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      align-items: center;
+      position: relative;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    }
+
+    .control-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .control-group label {
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--color-text-muted);
+      white-space: nowrap;
+    }
+
+    .control-group input,
+    .control-group select {
+      padding: 0.375rem 0.625rem;
+      border: 1px solid var(--color-border);
+      border-radius: 6px;
+      font-family: var(--font-base);
+      font-size: 0.8125rem;
+      background: var(--color-surface);
+      transition: all var(--transition);
+      min-width: 0;
+    }
+
+    .control-group input {
+      width: 70px;
+    }
+
+    .control-group select {
+      min-width: 140px;
+    }
+
+    .control-group input:focus,
+    .control-group select:focus {
+      outline: none;
+      border-color: var(--color-accent);
+      box-shadow: 0 0 0 3px rgba(3, 105, 161, 0.1);
+    }
+
+    .control-group input:disabled {
+      background: var(--color-background);
+      color: var(--color-text-muted);
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
+    .control-info {
+      position: absolute;
+      top: 0.875rem;
+      right: 1.25rem;
+      padding: 0.375rem 0.75rem;
+      background: var(--color-background);
+      border: 1px solid var(--color-border);
+      border-radius: 6px;
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+      font-family: 'Monaco', 'Menlo', monospace;
+    }
+
+    /* Demo Layout - 2 columns: source + preview */
+    .demo-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .demo-panel {
+      background: var(--color-background);
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: box-shadow var(--transition);
+    }
+
+    .demo-panel:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .demo-panel-header {
+      padding: 1rem 1.5rem;
+      background: var(--color-surface);
+      border-bottom: 1px solid var(--color-border);
+      font-weight: 600;
+      font-size: 0.875rem;
+      color: var(--color-text-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .demo-panel-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .demo-panel-content {
+      padding: 1.5rem;
+      overflow: auto;
+      flex-grow: 1;
+      height: 600px;
+    }
+
+    #demo-preview-area {
+      padding: 0;
+    }
+
+    #demo-preview-area > div {
+      transform-origin: top left;
+    }
+
+    #demo-content {
+      display: none;
+    }
+
+    /* Table Demo Styles */
+    .demo-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+      font-size: 0.875rem;
+    }
+
+    .demo-table th,
+    .demo-table td {
+      border: 1px solid var(--color-border);
+      padding: 0.75rem;
+      text-align: left;
+    }
+
+    .demo-table th {
+      background: var(--color-surface);
+      font-weight: 600;
+    }
+
+    .demo-table tbody tr:nth-child(even) {
+      background: var(--color-background);
+    }
+
+    /* Comparison */
+    .comparison {
+      padding: 4rem 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .comparison-table {
+      background: var(--color-surface);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--color-border);
+    }
+
+    .comparison-table table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .comparison-table th,
+    .comparison-table td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .comparison-table th {
+      background: var(--color-background);
+      font-weight: 600;
+      font-size: 0.875rem;
+    }
+
+    .comparison-table td:first-child {
+      font-weight: 500;
+    }
+
+    .check {
+      color: var(--color-success);
+      font-weight: 700;
+    }
+
+    .cross {
+      color: #DC2626;
+      font-weight: 700;
+    }
+
+    /* Footer */
+    .footer {
+      padding: 3rem 2rem;
+      background: var(--color-primary);
+      color: white;
+      text-align: center;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      transition: color var(--transition);
+    }
+
+    .footer-links a:hover {
+      color: white;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .demo-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .demo-panel-content {
+        min-height: 400px;
+        max-height: none;
+      }
+
+      .examples-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .hero {
+        padding: 6rem 1rem 3rem;
+      }
+
+      .demo-tabs {
+        overflow-x: auto;
+        gap: 0.25rem;
+      }
+
+      .demo-tab {
+        padding: 0.75rem 1rem;
+        white-space: nowrap;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <nav class="nav">
+      <a href="#" class="logo">FlowPrint</a>
+      <ul class="nav-links">
+        <li><a href="#examples">示例</a></li>
+        <li><a href="#demo">演示</a></li>
+        <li><a href="#comparison">对比</a></li>
+        <li><a href="https://github.com/zhoumao1/FlowPrint">GitHub</a></li>
+      </ul>
+      <a href="https://www.npmjs.com/package/flowprint" class="btn btn-primary">立即使用</a>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>现代化的 Web 打印解决方案</h1>
+      <p>零依赖、智能分页、完美还原 - 让 Web 打印变得简单而强大</p>
+      <div class="hero-cta">
+        <a href="#demo" class="btn btn-primary">在线演示</a>
+        <a href="https://github.com/zhoumao1/FlowPrint" class="btn btn-secondary">查看文档</a>
+      </div>
+      <div class="install-command">
+        <span>npm install flowprint</span>
+        <button class="copy-btn" onclick="copyInstall()">复制</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Code Examples - 4-column grid -->
+  <section class="code-examples" id="examples">
+    <h2 class="section-title">快速开始</h2>
+    <div class="examples-grid">
+      <div class="example-card">
+        <div class="example-header">
+          <h3>基础用法</h3>
+          <p>最简单的打印实现</p>
+        </div>
+        <div class="example-code"><span class="keyword">import</span> PrinterController <span class="keyword">from</span> <span class="string">'flowprint'</span>
+<span class="keyword">import</span> <span class="string">'flowprint/print.css'</span>
+
+<span class="keyword">const</span> printer = <span class="keyword">new</span> <span class="function">PrinterController</span>({
+  element: <span class="string">'#content'</span>
+})
+
+<span class="keyword">await</span> printer.<span class="function">exec</span>()</div>
+      </div>
+
+      <div class="example-card">
+        <div class="example-header">
+          <h3>带页眉页脚</h3>
+          <p>添加自定义页眉和页脚</p>
+        </div>
+        <div class="example-code"><span class="keyword">const</span> printer = <span class="keyword">new</span> <span class="function">PrinterController</span>({
+  element: <span class="string">'#content'</span>,
+  header: {
+    left: <span class="string">'公司名称'</span>,
+    center: <span class="string">'文档标题'</span>,
+    right: <span class="string">'2024-01-01'</span>
+  },
+  footer: {
+    center: <span class="string">'第 {current} / {total} 页'</span>
+  }
+})</div>
+      </div>
+
+      <div class="example-card">
+        <div class="example-header">
+          <h3>自定义页面尺寸</h3>
+          <p>支持 A4、A3、Letter 等</p>
+        </div>
+        <div class="example-code"><span class="keyword">const</span> printer = <span class="keyword">new</span> <span class="function">PrinterController</span>({
+  element: <span class="string">'#content'</span>,
+  paper: <span class="string">'A4'</span>,
+  orientation: <span class="string">'portrait'</span>,
+  margin: {
+    top: <span class="string">'20mm'</span>,
+    bottom: <span class="string">'20mm'</span>,
+    left: <span class="string">'15mm'</span>,
+    right: <span class="string">'15mm'</span>
+  }
+})</div>
+      </div>
+
+      <div class="example-card">
+        <div class="example-header">
+          <h3>预览后打印</h3>
+          <p>先预览再打印，支持内容更新</p>
+        </div>
+        <div class="example-code"><span class="comment">// 预览</span>
+<span class="keyword">await</span> printer.<span class="function">preview</span>(<span class="string">'#preview'</span>)
+
+<span class="comment">// 内容变化后更新</span>
+<span class="keyword">await</span> printer.<span class="function">update</span>()
+
+<span class="comment">// 打印</span>
+<span class="keyword">await</span> printer.<span class="function">exec</span>()</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Demo Section -->
+  <section class="demo-section" id="demo">
+    <div class="demo-container">
+      <h2 class="section-title">在线演示</h2>
+
+      <!-- Horizontal Tabs -->
+      <div class="demo-tabs">
+        <button class="demo-tab active" data-demo="table">复杂表格</button>
+        <button class="demo-tab" data-demo="text">长文本分页</button>
+        <button class="demo-tab" data-demo="image">图片自适应</button>
+        <!--<button class="demo-tab" data-demo="mixed">图文混排</button>-->
+      </div>
+
+      <!-- Page Settings -->
+      <div class="page-settings">
+        <div class="control-group">
+          <label>预设尺寸</label>
+          <select id="paperSizePreset" onchange="onPresetChange()">
+            <option value="A3">A3 (297x420mm)</option>
+            <option value="A4" selected>A4 (210x297mm)</option>
+            <option value="A5">A5 (148x210mm)</option>
+            <option value="Letter">Letter (216x279mm)</option>
+            <option value="Legal">Legal (216x356mm)</option>
+            <option value="custom">自定义</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label>宽度</label>
+          <input id="paperWidth" type="number" value="210" min="20" max="1000" disabled />
+        </div>
+
+        <div class="control-group">
+          <label>高度</label>
+          <input id="paperHeight" type="number" value="297" min="20" max="1000" disabled />
+        </div>
+
+        <div class="control-group">
+          <label>方向</label>
+          <select id="paperOrientation">
+            <option value="portrait">纵向</option>
+            <option value="landscape">横向</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label>上</label>
+          <input id="marginTop" type="number" value="20" min="0" max="100" />
+        </div>
+
+        <div class="control-group">
+          <label>右</label>
+          <input id="marginRight" type="number" value="15" min="0" max="100" />
+        </div>
+
+        <div class="control-group">
+          <label>下</label>
+          <input id="marginBottom" type="number" value="20" min="0" max="100" />
+        </div>
+
+        <div class="control-group">
+          <label>左</label>
+          <input id="marginLeft" type="number" value="15" min="0" max="100" />
+        </div>
+
+        <div class="control-info">
+          <span id="currentSize">210×297mm</span> | <span id="currentMargin">20/15/20/15mm</span>
+        </div>
+      </div>
+
+      <!-- Demo Layout: Source + Preview -->
+      <div class="demo-layout">
+        <div class="demo-panel">
+          <div class="demo-panel-header">
+            <span>原始内容</span>
+            <div class="demo-panel-actions">
+              <button class="btn btn-primary" id="previewBtn" onclick="handlePreview()">
+                <span class="btn-text">预览</span>
+                <span class="spinner" style="display:none"></span>
+              </button>
+              <button class="btn btn-secondary" id="printBtn" onclick="handlePrint()">
+                <span class="btn-text">打印</span>
+                <span class="spinner" style="display:none"></span>
+              </button>
+            </div>
+          </div>
+          <div class="demo-panel-content" id="source-preview"></div>
+        </div>
+
+        <div class="demo-panel">
+          <div class="demo-panel-header">打印预览</div>
+          <div class="demo-panel-content" id="demo-preview-area">
+            <p style="text-align:center;color:#64748B;padding:40px;">点击"预览"按钮查看打印效果</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Hidden content for printing -->
+  <div id="demo-content" style="display:none"></div>
+
+  <!-- Comparison -->
+  <section class="comparison" id="comparison">
+    <h2 class="section-title">为什么选择 FlowPrint？</h2>
+    <div class="comparison-table">
+      <table>
+        <thead>
+          <tr>
+            <th>特性</th>
+            <th>FlowPrint</th>
+            <th>Print.js</th>
+            <th>html2canvas</th>
+            <th>window.print()</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>零依赖</td>
+            <td class="check">✓</td>
+            <td class="cross">✗</td>
+            <td class="cross">✗</td>
+            <td class="check">✓</td>
+          </tr>
+          <tr>
+            <td>智能分页</td>
+            <td class="check">✓</td>
+            <td class="cross">✗</td>
+            <td class="cross">✗</td>
+            <td class="cross">✗</td>
+          </tr>
+          <tr>
+            <td>样式完美还原</td>
+            <td class="check">✓</td>
+            <td class="cross">✗</td>
+            <td class="check">✓</td>
+            <td class="cross">✗</td>
+          </tr>
+          <tr>
+            <td>表格跨页（rowspan/colspan）</td>
+            <td class="check">✓</td>
+            <td class="cross">✗</td>
+            <td class="cross">✗</td>
+            <td class="cross">✗</td>
+          </tr>
+          <tr>
+            <td>打印预览</td>
+            <td class="check">✓</td>
+            <td class="cross">✗</td>
+            <td class="check">✓</td>
+            <td class="cross">✗</td>
+          </tr>
+          <tr>
+            <td>生命周期钩子</td>
+            <td class="check">✓</td>
+            <td class="cross">✗</td>
+            <td class="cross">✗</td>
+            <td class="cross">✗</td>
+          </tr>
+          <tr>
+            <td>文件大小</td>
+            <td>54KB (gzip 26KB)</td>
+            <td>~50KB</td>
+            <td>~200KB+</td>
+            <td>0</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="https://github.com/zhoumao1/FlowPrint">GitHub</a>
+      <a href="https://www.npmjs.com/package/flowprint">npm</a>
+      <a href="https://github.com/zhoumao1/FlowPrint/blob/main/README.md">文档</a>
+      <a href="https://github.com/zhoumao1/FlowPrint/issues">Issues</a>
+    </div>
+    <p>MIT License © 2024 zhoumao1</p>
+  </footer>
+
+  <script src="./print.umd.js"></script>
+  <script>
+    const { PrinterController } = window.KidneyPrint
+    let printer = null
+    let isLoading = false
+
+    // Paper size presets
+    const paperPresets = {
+      A3: { width: 297, height: 420 },
+      A4: { width: 210, height: 297 },
+      A5: { width: 148, height: 210 },
+      Letter: { width: 216, height: 279 },
+      Legal: { width: 216, height: 356 }
+    }
+
+    const demos = {
+      table: `<h2>复杂表格演示</h2>
+<p>测试 rowspan 和 colspan 的跨页处理能力</p>
+<table class="demo-table">
+  <thead>
+    <tr>
+      <th>部门</th>
+      <th>姓名</th>
+      <th>职位</th>
+      <th>工资</th>
+      <th>入职日期</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td rowspan="5">技术部</td>
+      <td>张三</td>
+      <td>前端工程师</td>
+      <td>¥15000</td>
+      <td>2023-01-15</td>
+    </tr>
+    <tr>
+      <td>李四</td>
+      <td>后端工程师</td>
+      <td>¥16000</td>
+      <td>2023-02-20</td>
+    </tr>
+    <tr>
+      <td>王五</td>
+      <td>测试工程师</td>
+      <td>¥14000</td>
+      <td>2023-03-10</td>
+    </tr>
+    <tr>
+      <td>赵六</td>
+      <td>UI设计师</td>
+      <td>¥13000</td>
+      <td>2023-04-05</td>
+    </tr>
+    <tr>
+      <td>孙七</td>
+      <td>产品经理</td>
+      <td>¥18000</td>
+      <td>2023-05-12</td>
+    </tr>
+    <tr>
+      <td rowspan="3">市场部</td>
+      <td>周八</td>
+      <td>市场专员</td>
+      <td>¥12000</td>
+      <td>2023-06-01</td>
+    </tr>
+    <tr>
+      <td>吴九</td>
+      <td>销售经理</td>
+      <td>¥20000</td>
+      <td>2023-07-15</td>
+    </tr>
+    <tr>
+      <td>郑十</td>
+      <td>品牌经理</td>
+      <td>¥17000</td>
+      <td>2023-08-20</td>
+    </tr>
+    ${Array(30).fill(0).map((_, i) => `
+    <tr>
+      <td>部门${i + 1}</td>
+      <td>员工${i + 1}</td>
+      <td>职位${i + 1}</td>
+      <td>¥${15000 + i * 100}</td>
+      <td>2024-01-${String(i % 28 + 1).padStart(2, '0')}</td>
+    </tr>
+    `).join('')}
+  </tbody>
+</table>`,
+      text: `<h2>长文本分页测试</h2>${Array(20).fill(0).map((_, i) => `<h3>第 ${i + 1} 段</h3><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>`).join('')}`,
+      image: `<h2>图片处理测试</h2><div style="margin:20px 0;"><img src="https://picsum.photos/800/400?random=1" style="max-width:100%;height:auto;border-radius:8px;"></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:15px;">${Array(9).fill(0).map((_, i) => `<img src="https://picsum.photos/200/150?random=${i + 10}" style="width:100%;height:auto;border-radius:8px;">`).join('')}</div>`,
+      mixed: `<h2>图文混排测试</h2>${Array(5).fill(0).map((_, i) => `<div style="margin:20px 0;"><h3>章节 ${i + 1}</h3><div style="display:flex;gap:20px;align-items:start;"><img src="https://picsum.photos/300/200?random=${i + 20}" style="width:300px;height:auto;border-radius:8px;flex-shrink:0;"><p style="flex: 1">这是一段配合图片的文字内容。图文混排时需要确保分页时图片和文字的关联性，避免图片和文字被分到不同页面。FlowPrint 会智能处理这种情况，确保最佳的打印效果。</p></div></div>`).join('')}`
+    }
+
+    function onPresetChange() {
+      const preset = document.getElementById('paperSizePreset').value
+      const widthInput = document.getElementById('paperWidth')
+      const heightInput = document.getElementById('paperHeight')
+
+      if (preset === 'custom') {
+        widthInput.disabled = false
+        heightInput.disabled = false
+      } else {
+        const size = paperPresets[preset]
+        widthInput.value = size.width
+        heightInput.value = size.height
+        widthInput.disabled = true
+        heightInput.disabled = true
+      }
+      updateSizeInfo()
+    }
+
+    function updateSizeInfo() {
+      const width = document.getElementById('paperWidth').value
+      const height = document.getElementById('paperHeight').value
+      const top = document.getElementById('marginTop').value
+      const right = document.getElementById('marginRight').value
+      const bottom = document.getElementById('marginBottom').value
+      const left = document.getElementById('marginLeft').value
+
+      document.getElementById('currentSize').textContent = `${width}×${height}mm`
+      document.getElementById('currentMargin').textContent = `${top}/${right}/${bottom}/${left}mm`
+    }
+
+    // Update info on input change
+    document.addEventListener('DOMContentLoaded', () => {
+      ['paperWidth', 'paperHeight', 'marginTop', 'marginRight', 'marginBottom', 'marginLeft'].forEach(id => {
+        document.getElementById(id).addEventListener('input', updateSizeInfo)
+      })
+    })
+
+    function setLoading(loading) {
+      isLoading = loading
+      const previewBtn = document.getElementById('previewBtn')
+      const printBtn = document.getElementById('printBtn')
+
+      previewBtn.disabled = loading
+      printBtn.disabled = loading
+
+      previewBtn.querySelector('.btn-text').textContent = loading ? '预览中...' : '预览'
+      previewBtn.querySelector('.spinner').style.display = loading ? 'inline-block' : 'none'
+      printBtn.querySelector('.btn-text').textContent = loading ? '打印中...' : '打印'
+      printBtn.querySelector('.spinner').style.display = loading ? 'inline-block' : 'none'
+    }
+
+    // Tab switching
+    document.querySelectorAll('.demo-tab').forEach(tab => {
+      tab.addEventListener('click', function() {
+        document.querySelectorAll('.demo-tab').forEach(t => t.classList.remove('active'))
+        this.classList.add('active')
+        loadDemo(this.dataset.demo)
+      })
+    })
+
+    function loadDemo(type) {
+      const content = demos[type]
+      document.getElementById('demo-content').innerHTML = content
+      document.getElementById('source-preview').innerHTML = content
+      document.getElementById('demo-preview-area').innerHTML = '<p style="text-align:center;color:#64748B;padding:40px;">点击"预览"按钮查看打印效果</p>'
+      if (printer) {
+        printer.destroy()
+        printer = null
+      }
+    }
+
+    function getPrinterOptions() {
+      const preset = document.getElementById('paperSizePreset').value
+      const width = document.getElementById('paperWidth').value
+      const height = document.getElementById('paperHeight').value
+      const orientation = document.getElementById('paperOrientation').value
+      const marginTop = document.getElementById('marginTop').value
+      const marginRight = document.getElementById('marginRight').value
+      const marginBottom = document.getElementById('marginBottom').value
+      const marginLeft = document.getElementById('marginLeft').value
+
+      return {
+        element: '#demo-content',
+        paper: preset !== 'custom' ? preset : { width: `${width}mm`, height: `${height}mm` },
+        orientation: orientation,
+        margin: {
+          top: `${marginTop}mm`,
+          right: `${marginRight}mm`,
+          bottom: `${marginBottom}mm`,
+          left: `${marginLeft}mm`
+        },
+        header: { left: 'FlowPrint', center: '演示文档', right: new Date().toLocaleDateString() },
+        footer: { center: '第 {current} / {total} 页' }
+      }
+    }
+
+    async function handlePreview() {
+      if (isLoading) return
+
+      if (!document.getElementById('demo-content').innerHTML) {
+        loadDemo('table')
+      }
+
+      setLoading(true)
+
+      try {
+        if (printer) {
+          printer.destroy()
+        }
+        printer = new PrinterController(getPrinterOptions())
+        await printer.preview('#demo-preview-area')
+      } catch (error) {
+        console.error('Preview error:', error)
+        alert('预览失败：' + error.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    async function handlePrint() {
+      if (isLoading) return
+
+      if (!document.getElementById('demo-content').innerHTML) {
+        loadDemo('table')
+      }
+
+      setLoading(true)
+
+      try {
+        console.log(getPrinterOptions())
+        if (!printer) {
+          printer = new PrinterController(getPrinterOptions())
+        }
+        await printer.exec()
+      } catch (error) {
+        console.error('Print error:', error)
+        alert('打印失败：' + error.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    function copyInstall() {
+      navigator.clipboard.writeText('npm install flowprint')
+      const btn = event.target
+      btn.textContent = '已复制'
+      setTimeout(() => btn.textContent = '复制', 2000)
+    }
+
+    // Load default demo
+    loadDemo('table')
+  </script>
+</body>
+</html>

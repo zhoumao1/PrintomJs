@@ -1,0 +1,41 @@
+{
+  "name": "flow-print",
+  "version": "1.0.0",
+  "description": "Modern web printing solution - Zero dependencies, smart pagination, perfect rendering",
+  "main": "print.cjs.min.js",
+  "module": "print.es.min.js",
+  "unpkg": "print.umd.min.js",
+  "jsdelivr": "print.umd.min.js",
+  "types": "index.d.ts",
+  "files": [
+    "print.es.js",
+    "print.es.min.js",
+    "print.umd.js",
+    "print.umd.min.js",
+    "print.cjs.js",
+    "print.cjs.min.js",
+    "print.css",
+    "index.d.ts",
+    "README.md"
+  ],
+  "keywords": [
+    "print",
+    "printer",
+    "web-print",
+    "page-break",
+    "pdf",
+    "flow-print",
+    "pagination",
+    "print-preview"
+  ],
+  "author": "zhoumao1",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zhoumao1/FlowPrint.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zhoumao1/FlowPrint/issues"
+  },
+  "homepage": "https://zhoumao1.github.io/FlowPrint/"
+}
