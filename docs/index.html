@@ -968,7 +968,10 @@
     `).join('')}
   </tbody>
 </table>`,
-      text: `<h2>长文本分页测试</h2>${Array(20).fill(0).map((_, i) => `<h3>第 ${i + 1} 段</h3><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>`).join('')}`,
+      text: `<h2>长文本分页测试</h2>${ Array(9)
+        .fill(0)
+        .map((_, i) => `<h3>第 ${ i + 1 } 段</h3><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercita${ i === 7 ? '':' ullamco laboris' }</p>`)
+        .join('') }`,
       image: `<h2>图片处理测试</h2><div style="margin:20px 0;"><img src="https://picsum.photos/800/400?random=1" style="max-width:100%;height:auto;border-radius:8px;"></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:15px;">${Array(9).fill(0).map((_, i) => `<img src="https://picsum.photos/200/150?random=${i + 10}" style="width:100%;height:auto;border-radius:8px;">`).join('')}</div>`,
       mixed: `<h2>图文混排测试</h2>${Array(5).fill(0).map((_, i) => `<div style="margin:20px 0;"><h3>章节 ${i + 1}</h3><div style="display:flex;gap:20px;align-items:start;"><img src="https://picsum.photos/300/200?random=${i + 20}" style="width:300px;height:auto;border-radius:8px;flex-shrink:0;"><p style="flex: 1">这是一段配合图片的文字内容。图文混排时需要确保分页时图片和文字的关联性，避免图片和文字被分到不同页面。PrintomJs 会智能处理这种情况，确保最佳的打印效果。</p></div></div>`).join('')}`
     }
