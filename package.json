@@ -1,6 +1,6 @@
 {
   "name": "printom-js",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Modern web printing solution - Zero dependencies, smart pagination, perfect rendering",
   "main": "print.cjs.min.js",
   "module": "print.es.min.js",
